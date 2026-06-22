@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.fzu.sm2023.yjr.quizweb.mapper.RecordMapper">
+
+    <!-- 其他方法已经在接口中使用注解实现 -->
+
+</mapper>

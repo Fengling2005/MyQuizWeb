@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.fzu.sm2023.yjr.quizweb.mapper.QuestionMapper">
+    <select id="queryPage" resultType="cn.edu.fzu.sm2023.yjr.quizweb.entity.Question">
+        SELECT question.*
+        FROM question
+        <include refid="queryConditions"/>
+        ORDER BY question.question_id DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(question.question_id) FROM question
+        <include refid="queryConditions"/>
+    </select>
+
+
+    <sql id="queryConditions">
+        <where>
+            <if test="query.question_type != null and query.question_type.trim() != ''">
+                AND question.question_type LIKE CONCAT('%', #{query.question_type}, '%')
+            </if>
+            <if test="query.content != null and query.content.trim()  != ''">
+                AND question.content LIKE CONCAT('%', #{query.content}, '%')
+            </if>
+            <if test="query.explanation != null and query.explanation.trim()  != ''">
+                AND question.explanation=#{query.explanation}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 更新 -->
+    <update id="updateById" parameterType="cn.edu.fzu.sm2023.yjr.quizweb.entity.Question">
+        UPDATE question
+        <set>
+            <if test="questionType != null">
+                question_type = #{questionType},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="options != null">
+                options = #{options},
+            </if>
+            <if test="answer != null">
+                answer = #{answer},
+            </if>
+            <if test="explanation != null">
+                explanation = #{explanation},
+            </if>
+        </set>
+        WHERE question_id = #{questionId}
+    </update>
+
+    <!-- 插入 -->
+    <insert id="insert" parameterType="cn.edu.fzu.sm2023.yjr.quizweb.entity.Question" useGeneratedKeys="true" keyProperty="questionId">
+        INSERT INTO question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionType != null">question_type,</if>
+            <if test="content != null">content,</if>
+            <if test="options != null">options,</if>
+            <if test="answer != null">answer,</if>
+            <if test="explanation != null">explanation,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionType != null">#{questionType},</if>
+            <if test="content != null">#{content},</if>
+            <if test="options != null">#{options},</if>
+            <if test="answer != null">#{answer},</if>
+            <if test="explanation != null">#{explanation},</if>
+        </trim>
+    </insert>
+
+    <!-- 根据ID列表删除 -->
+    <delete id="removeByIds">
+        DELETE FROM question
+        WHERE question_id IN
+        <foreach item="questionId" collection="list" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+
+</mapper>
