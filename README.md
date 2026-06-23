@@ -16,5 +16,5 @@
 ## 运行方式
 1. 修改 application.yaml 中的数据库配置
 2. 在 IDEA 中运行 Spring Boot 主类
-3. cd web → npm install → npm run dev
-4. 访问 http://localhost:5173
+3. 在项目终端运行命令cd web → npm install → npm run dev
+4. 访问 http://localhost:5173/login
